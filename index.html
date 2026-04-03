@@ -845,7 +845,15 @@
       .projects-table td:nth-child(2),
       .projects-table th:nth-child(3),
       .projects-table td:nth-child(3) { display: none; }
-      #nav .nav-links { gap: 1.2rem; }
+      #nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .6rem;
+        padding: 1rem 1.2rem;
+      }
+      #nav .nav-links { gap: 1.4rem; }
+      #nav a { font-size: .5rem; letter-spacing: .18em; }
+      #nav .nav-logo { font-size: .55rem; }
     }
   </style>
 </head>
@@ -883,7 +891,7 @@
 <section id="hero">
   <!-- Double-buffered YouTube hero: hv-a is active, hv-b loads next -->
   <iframe class="h-vid on" id="hv-a"
-    src="https://www.youtube.com/embed/AkjpWXQ4LVk?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&disablekb=1&playlist=AkjpWXQ4LVk"
+    src="https://www.youtube.com/embed/YcPfFY9zapg?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&disablekb=1&playlist=YcPfFY9zapg"
     allow="autoplay; encrypted-media" allowfullscreen></iframe>
   <iframe class="h-vid" id="hv-b" src=""
     allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -914,6 +922,20 @@
       <!-- 1 -->
       <div class="thumb reveal" data-idx="0">
         <div class="thumb-frame">
+          <img src="https://img.youtube.com/vi/YcPfFY9zapg/maxresdefault.jpg" alt='4won5ive — "Dangerous"' loading="lazy">
+          <div class="thumb-dim"></div>
+          <div class="scanlines"></div>
+          <div class="thumb-play"><div class="thumb-play-btn"><svg width="10" height="12" viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg></div></div>
+        </div>
+        <div class="thumb-meta">
+          <span class="thumb-name">4won5ive — "Dangerous" MV</span>
+          <span class="thumb-year">2026</span>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="thumb reveal reveal-d1" data-idx="1">
+        <div class="thumb-frame">
           <img src="https://img.youtube.com/vi/AkjpWXQ4LVk/maxresdefault.jpg" alt="Skaiwater — Chicago" loading="lazy">
           <div class="thumb-dim"></div>
           <div class="scanlines"></div>
@@ -925,8 +947,8 @@
         </div>
       </div>
 
-      <!-- 2 -->
-      <div class="thumb reveal reveal-d1" data-idx="1">
+      <!-- 3 -->
+      <div class="thumb reveal reveal-d2" data-idx="2">
         <div class="thumb-frame">
           <img src="https://img.youtube.com/vi/RTX8dygiVUk/maxresdefault.jpg" alt="DJMainoDaPlug" loading="lazy">
           <div class="thumb-dim"></div>
@@ -939,8 +961,8 @@
         </div>
       </div>
 
-      <!-- 3 -->
-      <div class="thumb reveal reveal-d2" data-idx="2">
+      <!-- 4 -->
+      <div class="thumb reveal reveal-d3" data-idx="3">
         <div class="thumb-frame">
           <img src="https://img.youtube.com/vi/MeSN3txF8GU/maxresdefault.jpg" alt="UnotheActivist at Summerfest 2025" loading="lazy">
           <div class="thumb-dim"></div>
@@ -949,20 +971,6 @@
         </div>
         <div class="thumb-meta">
           <span class="thumb-name">UnotheActivist at Summerfest 2025</span>
-          <span class="thumb-year">2025</span>
-        </div>
-      </div>
-
-      <!-- 4 -->
-      <div class="thumb reveal reveal-d3" data-idx="3">
-        <div class="thumb-frame">
-          <img src="https://img.youtube.com/vi/tZg31UAqZwM/maxresdefault.jpg" alt="Garden State of Mind" loading="lazy">
-          <div class="thumb-dim"></div>
-          <div class="scanlines"></div>
-          <div class="thumb-play"><div class="thumb-play-btn"><svg width="10" height="12" viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg></div></div>
-        </div>
-        <div class="thumb-meta">
-          <span class="thumb-name">Garden State of Mind</span>
           <span class="thumb-year">2025</span>
         </div>
       </div>
@@ -984,6 +992,20 @@
       <!-- 6 -->
       <div class="thumb reveal reveal-d5" data-idx="5">
         <div class="thumb-frame">
+          <img src="https://img.youtube.com/vi/tZg31UAqZwM/maxresdefault.jpg" alt="Garden State of Mind" loading="lazy">
+          <div class="thumb-dim"></div>
+          <div class="scanlines"></div>
+          <div class="thumb-play"><div class="thumb-play-btn"><svg width="10" height="12" viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg></div></div>
+        </div>
+        <div class="thumb-meta">
+          <span class="thumb-name">Garden State of Mind</span>
+          <span class="thumb-year">2025</span>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="thumb reveal reveal-d6" data-idx="6">
+        <div class="thumb-frame">
           <img src="https://img.youtube.com/vi/9pOjs2wo4pQ/maxresdefault.jpg" alt="Dance Loud Drink Louder" loading="lazy">
           <div class="thumb-dim"></div>
           <div class="scanlines"></div>
@@ -991,20 +1013,6 @@
         </div>
         <div class="thumb-meta">
           <span class="thumb-name">Dance Loud Drink Louder</span>
-          <span class="thumb-year">2024</span>
-        </div>
-      </div>
-
-      <!-- 7 -->
-      <div class="thumb reveal reveal-d6" data-idx="6">
-        <div class="thumb-frame">
-          <img src="https://img.youtube.com/vi/YcPfFY9zapg/maxresdefault.jpg" alt='4won5ive — "Dangerous"' loading="lazy">
-          <div class="thumb-dim"></div>
-          <div class="scanlines"></div>
-          <div class="thumb-play"><div class="thumb-play-btn"><svg width="10" height="12" viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg></div></div>
-        </div>
-        <div class="thumb-meta">
-          <span class="thumb-name">4won5ive — "Dangerous" MV</span>
           <span class="thumb-year">2024</span>
         </div>
       </div>
@@ -1101,30 +1109,30 @@
       </thead>
       <tbody>
         <tr>
+          <td class="td-proj">"Dangerous" — 4won5ive</td>
+          <td>Director / DP / Editor</td>
+          <td>4won5ive</td>
+          <td>2026</td>
+          <td class="td-num">001</td>
+        </tr>
+        <tr>
           <td class="td-proj">Skaiwater — Chicago</td>
           <td>Videographer</td>
           <td>Skaiwater</td>
           <td>2026</td>
-          <td class="td-num">001</td>
+          <td class="td-num">002</td>
         </tr>
         <tr>
           <td class="td-proj">DJMainoDaPlug</td>
           <td>Videographer / Editor</td>
           <td>DJMainoDaPlug</td>
           <td>2026</td>
-          <td class="td-num">002</td>
+          <td class="td-num">003</td>
         </tr>
         <tr>
           <td class="td-proj">UnotheActivist at Summerfest 2025</td>
           <td>Director / DP</td>
           <td>The Badger Herald</td>
-          <td>2025</td>
-          <td class="td-num">003</td>
-        </tr>
-        <tr>
-          <td class="td-proj">Garden State of Mind Campaign</td>
-          <td>Director / Editor</td>
-          <td>Garden State of Mind</td>
           <td>2025</td>
           <td class="td-num">004</td>
         </tr>
@@ -1136,16 +1144,16 @@
           <td class="td-num">005</td>
         </tr>
         <tr>
-          <td class="td-proj">Dance Loud Drink Louder — DJ Bummy</td>
-          <td>Videographer</td>
-          <td>Pak House Events</td>
-          <td>2024</td>
+          <td class="td-proj">Garden State of Mind Campaign</td>
+          <td>Director / Editor</td>
+          <td>Garden State of Mind</td>
+          <td>2025</td>
           <td class="td-num">006</td>
         </tr>
         <tr>
-          <td class="td-proj">"Dangerous" — 4won5ive</td>
-          <td>Director / DP / Editor</td>
-          <td>4won5ive</td>
+          <td class="td-proj">Dance Loud Drink Louder — DJ Bummy</td>
+          <td>Videographer</td>
+          <td>Pak House Events</td>
           <td>2024</td>
           <td class="td-num">007</td>
         </tr>
@@ -1166,9 +1174,9 @@
           About <em>Me</em>
         </div>
         <div class="about-identity reveal reveal-d2">
-          — Madison, Wisconsin<br>
-          — Videographer &amp; Multimedia Director<br>
-          — UW–Madison · Honors College<br>
+          — Videographer · Director · Editor<br>
+          — UW–Madison, School of Journalism<br>
+          — Honors College · First Wave Scholar<br>
           — Music Producer &amp; Audio Engineer
         </div>
       </div>
@@ -1194,24 +1202,27 @@
       <div class="reveal reveal-d1">
         <div class="about-block-title">Work<br><em>Experience</em></div>
         <div class="about-block-body">
-          — Badger Herald · UW–Madison<br>
+          — The Badger Herald · UW–Madison<br>
           &ensp;Multimedia Director, 2024–Present<br>
-          &ensp;Head of photo &amp; video team (50 people)<br>
-          — Short Documentary &amp; Interview Films<br>
-          &ensp;YouTube &amp; TikTok Distribution<br>
-          — Live Event Coverage<br>
-          &ensp;Summerfest 2025 · Madison, WI
+          &ensp;Leading photo &amp; video team of 50+<br>
+          &ensp;Documentary, interview &amp; live event coverage<br>
+          — Software Training for Students · UW–Madison<br>
+          &ensp;Student Technology Trainer, Feb 2026–Present<br>
+          &ensp;1-on-1 workshops: Premiere Pro, InDesign, Fx Studio<br>
+          — Freelance Videographer &amp; Music Producer<br>
+          &ensp;Artist content, music videos &amp; brand campaigns<br>
+          &ensp;5,000+ streams on Spotify
         </div>
       </div>
 
       <div class="reveal reveal-d2">
         <div class="about-block-title"><em>Skills</em></div>
         <div class="about-block-body">
-          — Adobe Premiere Pro (Advanced)<br>
-          — Logic Pro X (Advanced)<br>
-          — IT Studio (Advanced)<br>
-          — Adobe InDesign (Beginner)<br>
-          — Directing · DP · Editing · Sound Design<br>
+          — Adobe Premiere Pro · Advanced<br>
+          — Logic Pro X · Advanced<br>
+          — Fx Studio · Advanced<br>
+          — Adobe InDesign · Beginner<br>
+          — Directing · DP · Editing · Color<br>
           — Music Production · Audio Engineering
         </div>
       </div>
@@ -1295,13 +1306,13 @@
    DATA
 ────────────────────────────────────────────── */
 const VIDEOS = [
+  { id: 'YcPfFY9zapg', title: '4won5ive — "Dangerous"',                 meta: 'Director / DP / Editor\nMusic Video · 2026' },
   { id: 'AkjpWXQ4LVk', title: 'Skaiwater — Chicago',                   meta: 'Videographer\nArtist Content · Chicago, IL · 2026' },
   { id: 'RTX8dygiVUk', title: 'DJMainoDaPlug',                         meta: 'Videographer / Editor\n2026' },
   { id: 'MeSN3txF8GU', title: 'UnotheActivist at Summerfest 2025',      meta: 'Director / DP\nThe Badger Herald · Milwaukee, WI · 2025' },
-  { id: 'tZg31UAqZwM', title: 'Garden State of Mind',                   meta: 'Director / Editor\nSocial Media Campaign · Madison, WI · 2025' },
   { id: 'w2TgsRIRObs', title: 'Japanese Breakfast at The Sylvee',       meta: 'Videographer\nThe Badger Herald · Madison, WI · 2025' },
-  { id: '9pOjs2wo4pQ', title: 'Dance Loud Drink Louder — DJ Bummy',     meta: 'Videographer\nPak House Events · 2024' },
-  { id: 'YcPfFY9zapg', title: '4won5ive — "Dangerous"',                 meta: 'Director / DP / Editor\nMusic Video · 2024' }
+  { id: 'tZg31UAqZwM', title: 'Garden State of Mind',                   meta: 'Director / Editor\nSocial Media Campaign · Madison, WI · 2025' },
+  { id: '9pOjs2wo4pQ', title: 'Dance Loud Drink Louder — DJ Bummy',     meta: 'Videographer\nPak House Events · 2024' }
 ];
 
 function ytBg(id) {
