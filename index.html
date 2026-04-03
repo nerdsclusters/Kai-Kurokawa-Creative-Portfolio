@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kai Kurokawa — Videographer & Multimedia Director</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ─── Tokens ────────────────────────────────────────────── */
+    :root {
+      --cream:      #f0ebe3;
+      --off-white:  #f7f4ef;
+      --charcoal:   #0d0b09;
+      --terracotta: #b86840;
+      --warm-gray:  #8a8078;
+      --navy:       #0b1929;
+      --blue-accent:#4a8fd4;
+      --border:     rgba(13,11,9,0.10);
+      --border-lt:  rgba(240,235,227,0.10);
+    }
+
+    /* ─── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--charcoal);
+      color: var(--cream);
+      font-family: 'Space Mono', monospace;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    a { cursor: none; }
+    button { cursor: none; }
+
+    /* ─── Grain overlay ──────────────────────────────────────── */
+    #grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 900;
+      opacity: .04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      animation: grainShift 0.12s steps(1) infinite;
+    }
+    @keyframes grainShift {
+      0%   { background-position:   0px   0px; }
+      20%  { background-position: -50px -25px; }
+      40%  { background-position:  25px  50px; }
+      60%  { background-position: -25px  10px; }
+      80%  { background-position:  50px -40px; }
+      100% { background-position:  10px  25px; }
+    }
+
+    /* ─── Custom cursor ──────────────────────────────────────── */
+    #c-dot {
+      position: fixed; top: 0; left: 0;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #fff;
+      mix-blend-mode: difference;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+    }
+    #c-ring {
+      position: fixed; top: 0; left: 0;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.65);
+      mix-blend-mode: difference;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: width .25s ease, height .25s ease;
+    }
+    body:has(a:hover) #c-ring,
+    body:has(button:hover) #c-ring {
+      width: 50px; height: 50px;
+    }
+
+    /* ─── Global Nav ─────────────────────────────────────────── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 2.5rem;
+      mix-blend-mode: normal;
+      pointer-events: all;
+    }
+    #nav a {
+      font-family: 'Space Mono', monospace;
+      font-size: .6rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--cream);
+      opacity: .65;
+      transition: opacity .3s ease, color .4s ease;
+    }
+    #nav a:hover { opacity: 1; }
+    #nav .nav-logo { opacity: .9; font-size: .65rem; letter-spacing: .2em; }
+    #nav .nav-links { display: flex; gap: 2.5rem; }
+    #nav.on-light a { color: var(--charcoal); }
+
+    /* ─── Scanlines ──────────────────────────────────────────── */
+    .scanlines {
+      position: absolute; inset: 0; pointer-events: none; z-index: 2;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0px, transparent 2px,
+        rgba(0,0,0,.025) 2px, rgba(0,0,0,.025) 4px
+      );
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════════════════ */
+    #hero {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .h-vid {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.8s ease, filter .5s ease;
+      filter: blur(0px);
+    }
+    .h-vid.on { opacity: 1; }
+    /* Blur background when hovering the name */
+    #hero:has(.hero-title:hover) .h-vid.on { filter: blur(14px); scale: 1.04; }
+    #hero:has(.hero-title:hover) #hero-vignette { opacity: 1.5; }
+
+    #hero-vignette {
+      position: absolute; inset: 0; z-index: 1;
+      background:
+        radial-gradient(ellipse at center, transparent 30%, rgba(13,11,9,.65) 100%),
+        linear-gradient(to bottom, rgba(13,11,9,.15) 0%, rgba(13,11,9,.0) 50%, rgba(13,11,9,.6) 100%);
+    }
+
+    #hero-content {
+      position: absolute; inset: 0; z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: .55rem;
+      letter-spacing: .5em;
+      text-transform: uppercase;
+      color: rgba(240,235,227,.5);
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 7.5vw, 7rem);
+      letter-spacing: .1em;
+      line-height: 1.05;
+      color: var(--cream);
+      white-space: nowrap;
+      pointer-events: auto;
+      cursor: none;
+      /* soft text-shadow lift on hover */
+      transition: text-shadow .4s ease;
+    }
+    .hero-title:hover {
+      text-shadow: 0 0 40px rgba(240,235,227,.4), 0 2px 60px rgba(240,235,227,.15);
+    }
+    .hero-title em {
+      font-style: italic;
+      font-weight: 300;
+      letter-spacing: .06em;
+    }
+
+    .hero-tagline {
+      margin-top: 1.8rem;
+      font-family: 'Space Mono', monospace;
+      font-size: .55rem;
+      letter-spacing: .4em;
+      text-transform: uppercase;
+      color: rgba(240,235,227,.45);
+    }
+
+    #hero-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-family: 'Space Mono', monospace;
+      font-size: .5rem;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: rgba(240,235,227,.3);
+      pointer-events: none;
+      transition: opacity .5s ease;
+      white-space: nowrap;
+    }
+
+    #hero-progress {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 1px;
+      background: rgba(240,235,227,.25);
+      z-index: 3;
+      transition: width 8s linear;
+      width: 0%;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       WORKS
+    ═══════════════════════════════════════════════════════════ */
+    #works {
+      background: var(--off-white);
+      color: var(--charcoal);
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .works-wrap {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+
+    /* Left column */
+    .works-col {
+      padding: 7rem 1.8rem 3rem;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+    }
+
+    .works-col-title {
+      font-family: 'Space Mono', monospace;
+      font-size: .5rem;
+      letter-spacing: .4em;
+      text-transform: uppercase;
+      color: rgba(13,11,9,.3);
+      margin-bottom: 2.5rem;
+    }
+
+    /* Thumb card */
+    .thumb {
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .thumb-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .thumb-frame video {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: scale(1.0);
+      transition: transform .7s cubic-bezier(.25,.46,.45,.94);
+    }
+    .thumb:hover .thumb-frame video { transform: scale(1.05); }
+
+    .thumb-dim {
+      position: absolute; inset: 0; z-index: 2;
+      background: rgba(13,11,9,.12);
+      transition: background .4s ease;
+    }
+    .thumb:hover .thumb-dim { background: rgba(13,11,9,0); }
+
+    .thumb-play {
+      position: absolute;
+      inset: 0; z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity .35s ease;
+    }
+    .thumb:hover .thumb-play { opacity: 1; }
+    .thumb-play-btn {
+      width: 40px; height: 40px;
+      border: 1px solid rgba(240,235,227,.6);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .thumb-play-btn svg { fill: rgba(240,235,227,.9); margin-left: 2px; }
+
+    .thumb-meta {
+      margin-top: .6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .thumb-name {
+      font-family: 'Space Mono', monospace;
+      font-size: .52rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(13,11,9,.55);
+    }
+    .thumb-year {
+      font-family: 'Space Mono', monospace;
+      font-size: .46rem;
+      color: rgba(13,11,9,.3);
+      letter-spacing: .1em;
+    }
+
+    /* Right: marquee + hover preview */
+    .works-center {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Marquee rows */
+    .works-marquee {
+      overflow: hidden;
+      width: 100%;
+      flex-shrink: 0;
+      padding: 0;
+      opacity: .28;
+      transition: opacity .5s ease;
+    }
+    .works-marquee:hover { opacity: 1; }
+    .marquee-track {
+      display: flex;
+      gap: 10px;
+      width: max-content;
+      animation: mLeft 22s linear infinite;
+    }
+    .marquee-track.rev {
+      animation: mRight 28s linear infinite;
+    }
+    @keyframes mLeft {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @keyframes mRight {
+      from { transform: translateX(-50%); }
+      to   { transform: translateX(0); }
+    }
+    .marquee-item {
+      width: 220px;
+      aspect-ratio: 16/9;
+      flex-shrink: 0;
+      overflow: hidden;
+      background: #0d0b09;
+      position: relative;
+    }
+    .marquee-item video {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Center mid area */
+    .works-mid {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 200px;
+    }
+
+    .works-mid-nav {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.8rem;
+      transition: opacity .35s ease;
+    }
+    .works-mid-nav .wn-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: .7rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      text-decoration: none;
+    }
+    .works-mid-nav a {
+      font-family: 'Space Mono', monospace;
+      font-size: .58rem;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: rgba(13,11,9,.35);
+      text-decoration: none;
+      transition: color .3s ease;
+    }
+    .works-mid-nav a:hover { color: var(--charcoal); }
+
+    /* Large hover preview */
+    #works-preview {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .4s ease;
+      padding: 1.5rem;
+    }
+    #works-preview.show {
+      opacity: 1;
+    }
+    .works-preview-frame {
+      width: 100%;
+      max-width: 680px;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: #0d0b09;
+      position: relative;
+    }
+    .works-preview-frame video {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .works-preview-title {
+      margin-top: .8rem;
+      font-family: 'Space Mono', monospace;
+      font-size: .55rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(13,11,9,.5);
+      text-align: center;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       FILMS TABLE
+    ═══════════════════════════════════════════════════════════ */
+    #projects {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    #projects-bg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: .45;
+    }
+    #projects-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(13,11,9,.7) 0%,
+        rgba(13,11,9,.65) 60%,
+        rgba(13,11,9,.88) 100%
+      );
+    }
+
+    .projects-inner {
+      position: relative; z-index: 3;
+      padding: 8rem 3.5rem 5rem;
+    }
+
+    .projects-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .projects-table th {
+      font-family: 'Space Mono', monospace;
+      font-size: .46rem;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: rgba(240,235,227,.25);
+      text-align: left;
+      padding: 0 2rem 1.4rem 0;
+      border-bottom: 1px solid rgba(240,235,227,.08);
+    }
+    .projects-table td {
+      font-family: 'Space Mono', monospace;
+      font-size: .56rem;
+      letter-spacing: .08em;
+      color: rgba(240,235,227,.7);
+      padding: 1.1rem 2rem 1.1rem 0;
+      border-bottom: 1px solid rgba(240,235,227,.05);
+      vertical-align: middle;
+      transition: color .25s ease;
+    }
+    .projects-table tr:hover td { color: var(--cream); }
+    .projects-table .td-proj {
+      font-size: .62rem;
+      letter-spacing: .05em;
+      color: var(--cream);
+    }
+    .projects-table .td-num {
+      color: rgba(240,235,227,.2);
+      font-size: .46rem;
+      letter-spacing: .2em;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       ABOUT
+    ═══════════════════════════════════════════════════════════ */
+    #about {
+      background: var(--off-white);
+      color: var(--charcoal);
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    .about-left {
+      padding: 8rem 3rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .about-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 5.5vw, 5.2rem);
+      letter-spacing: -.01em;
+      line-height: .88;
+      text-transform: uppercase;
+      color: var(--charcoal);
+    }
+    .about-display em {
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .about-identity {
+      margin-top: 2.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: .52rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(13,11,9,.35);
+      line-height: 2;
+    }
+
+    .about-bottom-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: .48rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(13,11,9,.28);
+    }
+
+    .about-right {
+      padding: 8rem 3rem 4rem;
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 3.5rem;
+      justify-content: center;
+    }
+
+    .about-block-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+      line-height: 1;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      margin-bottom: .8rem;
+    }
+    .about-block-title em { font-style: italic; }
+
+    .about-block-body {
+      font-family: 'Space Mono', monospace;
+      font-size: .5rem;
+      letter-spacing: .1em;
+      color: rgba(13,11,9,.48);
+      line-height: 2;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       CONTACT
+    ═══════════════════════════════════════════════════════════ */
+    #contact {
+      background: var(--navy);
+      min-height: 65vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #contact-bg-strip {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 60%, rgba(74,143,212,.1) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .contact-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: .52rem;
+      letter-spacing: .45em;
+      text-transform: uppercase;
+      color: rgba(240,235,227,.25);
+      margin-bottom: 2rem;
+    }
+
+    .contact-email {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2rem, 4.5vw, 4.2rem);
+      letter-spacing: -.01em;
+      color: var(--cream);
+      text-decoration: none;
+      display: block;
+      transition: color .35s ease;
+      line-height: 1.05;
+    }
+    .contact-email:hover { color: var(--blue-accent); }
+
+    .contact-phone {
+      margin-top: 1rem;
+      font-family: 'Space Mono', monospace;
+      font-size: .58rem;
+      letter-spacing: .25em;
+      color: rgba(240,235,227,.25);
+    }
+
+    .contact-footer {
+      margin-top: 5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: .45rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: rgba(240,235,227,.15);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       VIDEO MODAL
+    ═══════════════════════════════════════════════════════════ */
+    #modal {
+      position: fixed; inset: 0;
+      z-index: 800;
+      background: rgba(13,11,9,.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .4s ease;
+    }
+    #modal.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-wrap {
+      width: 100%;
+      max-width: 1100px;
+      position: relative;
+    }
+
+    .modal-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+    }
+    .modal-label {
+      font-family: 'Space Mono', monospace;
+      font-size: .5rem;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: rgba(240,235,227,.3);
+    }
+    #modal-close {
+      font-family: 'Space Mono', monospace;
+      font-size: .5rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: rgba(240,235,227,.4);
+      background: none;
+      border: none;
+      padding: .4rem .6rem;
+      transition: color .3s ease;
+    }
+    #modal-close:hover { color: var(--cream); }
+
+    /* cinematic 2.35:1 frame */
+    .modal-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 2.35 / 1;
+      background: #000;
+      overflow: hidden;
+    }
+    .modal-frame video {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .modal-info {
+      margin-top: 1.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    #modal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+      letter-spacing: .04em;
+      color: var(--cream);
+    }
+    #modal-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: .5rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: rgba(240,235,227,.35);
+      text-align: right;
+      line-height: 1.8;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       SCROLL REVEAL
+    ═══════════════════════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .9s cubic-bezier(.22,1,.36,1),
+                  transform .9s cubic-bezier(.22,1,.36,1);
+    }
+    .reveal.vis {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-d1 { transition-delay: .1s; }
+    .reveal-d2 { transition-delay: .2s; }
+    .reveal-d3 { transition-delay: .3s; }
+    .reveal-d4 { transition-delay: .4s; }
+    .reveal-d5 { transition-delay: .5s; }
+
+    /* ─── Preloader ─────────────────────────────────────────── */
+    #preloader {
+      position: fixed; inset: 0;
+      background: var(--charcoal);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity .9s cubic-bezier(.22,1,.36,1);
+    }
+    #preloader.out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #pre-inner {
+      text-align: center;
+    }
+    #pre-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2.2rem, 7vw, 6rem);
+      letter-spacing: .14em;
+      color: var(--cream);
+      line-height: 1.1;
+    }
+    #pre-cur {
+      display: inline-block;
+      animation: blink .75s step-end infinite;
+      color: var(--blue-accent);
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    #pre-sub {
+      margin-top: 1.2rem;
+      font-family: 'Space Mono', monospace;
+      font-size: .5rem;
+      letter-spacing: .45em;
+      text-transform: uppercase;
+      color: rgba(240,235,227,0);
+      transition: color 1s ease .3s;
+    }
+    #pre-sub.show { color: rgba(240,235,227,.35); }
+
+    /* ─── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .works-wrap { grid-template-columns: 1fr; }
+      .works-center { display: none; }
+      .works-col { padding: 6rem 1.2rem 2rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-right { border-left: none; border-top: 1px solid var(--border); }
+      .about-left, .about-right { padding: 4rem 1.5rem; }
+      .projects-inner { padding: 6rem 1.5rem 3rem; }
+      .projects-table th:nth-child(2),
+      .projects-table td:nth-child(2),
+      .projects-table th:nth-child(3),
+      .projects-table td:nth-child(3) { display: none; }
+      #nav .nav-links { gap: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Preloader ─────────────────────────────── -->
+<div id="preloader">
+  <div id="pre-inner">
+    <div id="pre-name"><span id="pre-typed"></span><span id="pre-cur">_</span></div>
+    <div id="pre-sub"></div>
+  </div>
+</div>
+
+<!-- ── Grain ─────────────────────────────────── -->
+<div id="grain" aria-hidden="true"></div>
+
+<!-- ── Cursor ────────────────────────────────── -->
+<div id="c-dot"></div>
+<div id="c-ring"></div>
+
+<!-- ── Nav ───────────────────────────────────── -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">Kai Kurokawa</a>
+  <div class="nav-links">
+    <a href="#works">Works</a>
+    <a href="#projects">Projects</a>
+    <a href="#about">Info</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════ -->
+<section id="hero">
+  <video class="h-vid on" id="hv0" autoplay muted loop playsinline preload="auto"
+    src="brand_assets/final edit sf uno.mp4"></video>
+  <video class="h-vid" id="hv1" muted loop playsinline preload="none"
+    src="brand_assets/skaiday1chicago.mp4"></video>
+  <video class="h-vid" id="hv2" muted loop playsinline preload="none"
+    src="brand_assets/mv final dangerous by 4won5ive.mp4"></video>
+  <video class="h-vid" id="hv3" muted loop playsinline preload="none"
+    src="brand_assets/mainoedited2.mp4"></video>
+  <video class="h-vid" id="hv4" muted loop playsinline preload="none"
+    src="brand_assets/final vers.mp4"></video>
+  <video class="h-vid" id="hv5" muted loop playsinline preload="none"
+    src="brand_assets/MVI_0544.MP4"></video>
+
+  <div id="hero-vignette"></div>
+  <div class="scanlines"></div>
+
+  <div id="hero-content">
+    <p class="hero-eyebrow">Videographer &nbsp;·&nbsp; Madison, WI</p>
+    <h1 class="hero-title">Kai <em>Kurokawa</em></h1>
+    <p class="hero-tagline">Multimedia Director &nbsp;·&nbsp; DP &nbsp;·&nbsp; Editor</p>
+  </div>
+
+  <div id="hero-hint">Click to pause</div>
+  <div id="hero-progress"></div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     WORKS
+════════════════════════════════════════════ -->
+<section id="works">
+  <div class="works-wrap">
+
+    <!-- Thumbnail column -->
+    <div class="works-col">
+      <div class="works-col-title">Selected Works</div>
+
+      <!-- 1 -->
+      <div class="thumb reveal" data-idx="0">
+        <div class="thumb-frame">
+          <video muted loop playsinline preload="metadata"
+            src="brand_assets/final edit sf uno.mp4"></video>
+          <div class="thumb-dim"></div>
+          <div class="scanlines"></div>
+          <div class="thumb-play">
+            <div class="thumb-play-btn">
+              <svg width="10" height="12" viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="thumb-meta">
+          <span class="thumb-name">UnoTheActivist — Summerfest</span>
+          <span class="thumb-year">2025</span>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="thumb reveal reveal-d1" data-idx="1">
+        <div class="thumb-frame">
+          <video muted loop playsinline preload="metadata"
+            src="brand_assets/final vers.mp4"></video>
+          <div class="thumb-dim"></div>
+          <div class="scanlines"></div>
+          <div class="thumb-play">
+            <div class="thumb-play-btn">
+              <svg width="10" height="12" viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="thumb-meta">
+          <span class="thumb-name">Garden State of Mind</span>
+          <span class="thumb-year">2025</span>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="thumb reveal reveal-d2" data-idx="2">
+        <div class="thumb-frame">
+          <video muted loop playsinline preload="metadata"
+            src="brand_assets/skaiday1chicago.mp4"></video>
+          <div class="thumb-dim"></div>
+          <div class="scanlines"></div>
+          <div class="thumb-play">
+            <div class="thumb-play-btn">
+              <svg width="10" height="12" viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="thumb-meta">
+          <span class="thumb-name">Skaiwater — Chicago</span>
+          <span class="thumb-year">2026</span>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="thumb reveal reveal-d3" data-idx="3">
+        <div class="thumb-frame">
+          <video muted loop playsinline preload="metadata"
+            src="brand_assets/mainoedited2.mp4"></video>
+          <div class="thumb-dim"></div>
+          <div class="scanlines"></div>
+          <div class="thumb-play">
+            <div class="thumb-play-btn">
+              <svg width="10" height="12" viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="thumb-meta">
+          <span class="thumb-name">DJMainoDaPlug</span>
+          <span class="thumb-year">2026</span>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="thumb reveal reveal-d4" data-idx="4">
+        <div class="thumb-frame">
+          <video muted loop playsinline preload="metadata"
+            src="brand_assets/MVI_0544.MP4"></video>
+          <div class="thumb-dim"></div>
+          <div class="scanlines"></div>
+          <div class="thumb-play">
+            <div class="thumb-play-btn">
+              <svg width="10" height="12" viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="thumb-meta">
+          <span class="thumb-name">Dance Loud Drink Louder</span>
+          <span class="thumb-year">2024</span>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="thumb reveal reveal-d5" data-idx="5">
+        <div class="thumb-frame">
+          <video muted loop playsinline preload="metadata"
+            src="brand_assets/mv final dangerous by 4won5ive.mp4"></video>
+          <div class="thumb-dim"></div>
+          <div class="scanlines"></div>
+          <div class="thumb-play">
+            <div class="thumb-play-btn">
+              <svg width="10" height="12" viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="thumb-meta">
+          <span class="thumb-name">4won5ive — "Dangerous" MV</span>
+          <span class="thumb-year">2024</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: marquee + hover preview -->
+    <div class="works-center">
+
+      <!-- Top marquee row -->
+      <div class="works-marquee">
+        <div class="marquee-track" id="mq1">
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/final edit sf uno.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/final vers.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/skaiday1chicago.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/mainoedited2.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/MVI_0544.MP4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/mv final dangerous by 4won5ive.mp4"></video></div>
+          <!-- duplicate for seamless loop -->
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/final edit sf uno.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/final vers.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/skaiday1chicago.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/mainoedited2.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/MVI_0544.MP4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/mv final dangerous by 4won5ive.mp4"></video></div>
+        </div>
+      </div>
+
+      <!-- Middle: nav (hides on hover) + large preview (shows on hover) -->
+      <div class="works-mid">
+        <nav class="works-mid-nav" id="works-mid-nav">
+          <a href="#hero" class="wn-logo">Kai Kurokawa</a>
+          <a href="#works">Works</a>
+          <a href="#projects">Projects</a>
+          <a href="#about">Info</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <div id="works-preview">
+          <div class="works-preview-frame">
+            <video id="works-preview-vid" muted loop playsinline></video>
+            <div class="scanlines"></div>
+          </div>
+          <div class="works-preview-title" id="works-preview-title"></div>
+        </div>
+      </div>
+
+      <!-- Bottom marquee row (reverse) -->
+      <div class="works-marquee">
+        <div class="marquee-track rev" id="mq2">
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/mv final dangerous by 4won5ive.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/MVI_0544.MP4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/mainoedited2.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/skaiday1chicago.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/final vers.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/final edit sf uno.mp4"></video></div>
+          <!-- duplicate -->
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/mv final dangerous by 4won5ive.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/MVI_0544.MP4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/mainoedited2.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/skaiday1chicago.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/final vers.mp4"></video></div>
+          <div class="marquee-item"><video autoplay muted loop playsinline src="brand_assets/final edit sf uno.mp4"></video></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     FILMS TABLE
+════════════════════════════════════════════ -->
+<section id="projects">
+  <video id="projects-bg" autoplay muted loop playsinline
+    src="brand_assets/mv final dangerous by 4won5ive.mp4"></video>
+  <div id="projects-overlay"></div>
+  <div class="scanlines"></div>
+
+  <div class="projects-inner">
+    <table class="projects-table reveal">
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Direction</th>
+          <th>Client</th>
+          <th>Year</th>
+          <th>No.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-proj">Summerfest — UnoTheActivist</td>
+          <td>Director / DP</td>
+          <td>Summerfest 2025</td>
+          <td>2025</td>
+          <td class="td-num">001</td>
+        </tr>
+        <tr>
+          <td class="td-proj">Garden State of Mind Campaign</td>
+          <td>Director / Editor</td>
+          <td>Garden State of Mind</td>
+          <td>2025</td>
+          <td class="td-num">002</td>
+        </tr>
+        <tr>
+          <td class="td-proj">Skaiwater — Chicago</td>
+          <td>Videographer</td>
+          <td>Skaiwater</td>
+          <td>2026</td>
+          <td class="td-num">003</td>
+        </tr>
+        <tr>
+          <td class="td-proj">DJMainoDaPlug</td>
+          <td>Videographer / Editor</td>
+          <td>DJMainoDaPlug</td>
+          <td>2026</td>
+          <td class="td-num">004</td>
+        </tr>
+        <tr>
+          <td class="td-proj">Dance Loud Drink Louder — DJ Bummy</td>
+          <td>Videographer</td>
+          <td>Pak House Events</td>
+          <td>2024</td>
+          <td class="td-num">005</td>
+        </tr>
+        <tr>
+          <td class="td-proj">"Dangerous" — 4won5ive</td>
+          <td>Director / DP / Editor</td>
+          <td>4won5ive</td>
+          <td>2024</td>
+          <td class="td-num">006</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     ABOUT
+════════════════════════════════════════════ -->
+<section id="about">
+  <div class="about-grid">
+
+    <div class="about-left">
+      <div>
+        <div class="about-display reveal">
+          About <em>Me</em>
+        </div>
+        <div class="about-identity reveal reveal-d2">
+          — Madison, Wisconsin<br>
+          — Videographer &amp; Multimedia Director<br>
+          — UW–Madison · Honors College<br>
+          — Music Producer &amp; Audio Engineer
+        </div>
+      </div>
+      <div class="about-bottom-tag reveal reveal-d3">
+        Madison, Wisconsin — Videographer &amp; Multimedia Director
+      </div>
+    </div>
+
+    <div class="about-right">
+
+      <div class="reveal">
+        <div class="about-block-title">Awards &amp;<br><em>Recognition</em></div>
+        <div class="about-block-body">
+          — Milwaukee Press Club · April 2025<br>
+          &ensp;"Best Live of Multi-Media"<br>
+          — First Wave Scholarship · UW–Madison<br>
+          &ensp;4-Year Hip Hop Urban Arts Fellowship<br>
+          — 3.5 Unweighted GPA · Honors College<br>
+          &ensp;Relevant: JOUR 202, JOUR 201, COMARTS 252
+        </div>
+      </div>
+
+      <div class="reveal reveal-d1">
+        <div class="about-block-title">Work<br><em>Experience</em></div>
+        <div class="about-block-body">
+          — Badger Herald · UW–Madison<br>
+          &ensp;Multimedia Director, 2024–Present<br>
+          &ensp;Head of photo &amp; video team (50 people)<br>
+          — Short Documentary &amp; Interview Films<br>
+          &ensp;YouTube &amp; TikTok Distribution<br>
+          — Live Event Coverage<br>
+          &ensp;Summerfest 2025 · Madison, WI
+        </div>
+      </div>
+
+      <div class="reveal reveal-d2">
+        <div class="about-block-title"><em>Skills</em></div>
+        <div class="about-block-body">
+          — Adobe Premiere Pro (Advanced)<br>
+          — Logic Pro X (Advanced)<br>
+          — IT Studio (Advanced)<br>
+          — Adobe InDesign (Beginner)<br>
+          — Directing · DP · Editing · Sound Design<br>
+          — Music Production · Audio Engineering
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     CONTACT
+════════════════════════════════════════════ -->
+<section id="contact">
+  <div id="contact-bg-strip"></div>
+  <p class="contact-eyebrow reveal">Get in touch</p>
+  <a href="mailto:kurokawkai@gmail.com" class="contact-email reveal reveal-d1">
+    kurokawkai@gmail.com
+  </a>
+  <p class="contact-phone reveal reveal-d2">234-380-7129</p>
+  <p class="contact-footer reveal reveal-d3">
+    © 2026 Kai Kurokawa &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp; Madison, WI
+  </p>
+</section>
+
+<!-- ════════════════════════════════════════════
+     VIDEO MODAL
+════════════════════════════════════════════ -->
+<div id="modal" role="dialog" aria-modal="true">
+  <div class="modal-wrap">
+    <div class="modal-bar">
+      <span class="modal-label">Now Playing</span>
+      <button id="modal-close">Close ×</button>
+    </div>
+    <div class="modal-frame">
+      <video id="modal-vid" controls preload="none"></video>
+      <div class="scanlines"></div>
+    </div>
+    <div class="modal-info">
+      <div id="modal-title"></div>
+      <div id="modal-meta"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ──────────────────────────────────────────────
+   PRELOADER TYPEWRITER
+────────────────────────────────────────────── */
+(function() {
+  const NAME   = 'Kai Kurokawa';
+  const TAGLINE = 'Videographer · Madison, WI';
+  const typed  = document.getElementById('pre-typed');
+  const sub    = document.getElementById('pre-sub');
+  const loader = document.getElementById('preloader');
+  let i = 0;
+
+  function typeChar() {
+    if (i < NAME.length) {
+      typed.textContent += NAME[i++];
+      setTimeout(typeChar, 80 + Math.random() * 55);
+    } else {
+      // Name done — show tagline, then fade out
+      sub.textContent = TAGLINE;
+      sub.classList.add('show');
+      setTimeout(() => {
+        loader.classList.add('out');
+        setTimeout(() => loader.remove(), 950);
+      }, 900);
+    }
+  }
+
+  // Start after fonts are ready (or 200ms max wait)
+  const start = () => setTimeout(typeChar, 180);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(start);
+  } else {
+    start();
+  }
+})();
+
+/* ──────────────────────────────────────────────
+   DATA
+────────────────────────────────────────────── */
+const VIDEOS = [
+  {
+    src:   'brand_assets/final edit sf uno.mp4',
+    title: 'UnoTheActivist — Summerfest',
+    meta:  'Director / DP\nSummerfest 2025 · Milwaukee, WI'
+  },
+  {
+    src:   'brand_assets/final vers.mp4',
+    title: 'Garden State of Mind',
+    meta:  'Director / Editor\nSocial Media Campaign · Madison, WI · 2025'
+  },
+  {
+    src:   'brand_assets/skaiday1chicago.mp4',
+    title: 'Skaiwater — Chicago',
+    meta:  'Videographer\nArtist Content · Chicago, IL · 2026'
+  },
+  {
+    src:   'brand_assets/mainoedited2.mp4',
+    title: 'DJMainoDaPlug',
+    meta:  'Videographer / Editor\n2026'
+  },
+  {
+    src:   'brand_assets/MVI_0544.MP4',
+    title: 'Dance Loud Drink Louder — DJ Bummy',
+    meta:  'Videographer\nPak House Events · 2024'
+  },
+  {
+    src:   'brand_assets/mv final dangerous by 4won5ive.mp4',
+    title: '4won5ive — "Dangerous"',
+    meta:  'Director / DP / Editor\nMusic Video · 2024'
+  }
+];
+
+/* ──────────────────────────────────────────────
+   CURSOR
+────────────────────────────────────────────── */
+const dot  = document.getElementById('c-dot');
+const ring = document.getElementById('c-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  dot.style.left = mx + 'px';
+  dot.style.top  = my + 'px';
+});
+(function tick() {
+  rx += (mx - rx) * 0.13;
+  ry += (my - ry) * 0.13;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(tick);
+})();
+
+/* ──────────────────────────────────────────────
+   HERO VIDEO CYCLE
+────────────────────────────────────────────── */
+const heroVids  = Array.from(document.querySelectorAll('.h-vid'));
+const progress  = document.getElementById('hero-progress');
+const heroHint  = document.getElementById('hero-hint');
+let   hIdx      = 0;
+let   paused    = false;
+let   cycleTimer, progressTimer;
+const CYCLE_MS  = 8000;
+
+function resetProgress() {
+  progress.style.transition = 'none';
+  progress.style.width = '0%';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      progress.style.transition = `width ${CYCLE_MS}ms linear`;
+      progress.style.width = '100%';
+    });
+  });
+}
+
+function nextHero() {
+  if (paused) return;
+  heroVids[hIdx].classList.remove('on');
+  hIdx = (hIdx + 1) % heroVids.length;
+  const v = heroVids[hIdx];
+  v.classList.add('on');
+  v.play().catch(() => {});
+  resetProgress();
+}
+
+heroVids[0].play().catch(() => {});
+resetProgress();
+cycleTimer = setInterval(nextHero, CYCLE_MS);
+
+document.getElementById('hero').addEventListener('click', () => {
+  paused = !paused;
+  if (paused) {
+    heroVids[hIdx].pause();
+    clearInterval(cycleTimer);
+    progress.style.transition = 'none';
+    heroHint.textContent = 'Click to resume';
+    heroHint.style.opacity = '.7';
+  } else {
+    heroVids[hIdx].play().catch(() => {});
+    cycleTimer = setInterval(nextHero, CYCLE_MS);
+    resetProgress();
+    heroHint.textContent = 'Click to pause';
+    heroHint.style.opacity = '.3';
+  }
+});
+
+/* ──────────────────────────────────────────────
+   NAV COLOUR ON SCROLL
+────────────────────────────────────────────── */
+const nav      = document.getElementById('nav');
+const worksTop = () => document.getElementById('works').offsetTop;
+const filmsTop = () => document.getElementById('projects').offsetTop;
+const aboutTop = () => document.getElementById('about').offsetTop;
+
+window.addEventListener('scroll', () => {
+  const sy = window.scrollY;
+  const onLight = (sy >= worksTop() && sy < filmsTop()) ||
+                  (sy >= aboutTop());
+  nav.classList.toggle('on-light', onLight);
+}, { passive: true });
+
+/* ──────────────────────────────────────────────
+   THUMBNAIL HOVER PREVIEW
+────────────────────────────────────────────── */
+const worksPreview      = document.getElementById('works-preview');
+const worksPreviewVid   = document.getElementById('works-preview-vid');
+const worksPreviewTitle = document.getElementById('works-preview-title');
+const worksMidNav       = document.getElementById('works-mid-nav');
+
+document.querySelectorAll('.thumb').forEach(thumb => {
+  const vid = thumb.querySelector('video');
+  const idx = +thumb.dataset.idx;
+
+  thumb.addEventListener('mouseenter', () => {
+    vid.play().catch(() => {});
+    // Show large preview in right panel
+    const d = VIDEOS[idx];
+    worksPreviewVid.src = d.src;
+    worksPreviewVid.load();
+    worksPreviewVid.play().catch(() => {});
+    worksPreviewTitle.textContent = d.title;
+    worksPreview.classList.add('show');
+    worksMidNav.style.opacity = '0';
+    worksMidNav.style.pointerEvents = 'none';
+  });
+
+  thumb.addEventListener('mouseleave', () => {
+    vid.pause(); vid.currentTime = 0;
+    worksPreview.classList.remove('show');
+    worksPreviewVid.pause();
+    worksMidNav.style.opacity = '1';
+    worksMidNav.style.pointerEvents = '';
+  });
+
+  thumb.addEventListener('click', () => openModal(idx));
+});
+
+/* ──────────────────────────────────────────────
+   MODAL
+────────────────────────────────────────────── */
+const modal      = document.getElementById('modal');
+const modalVid   = document.getElementById('modal-vid');
+const modalTitle = document.getElementById('modal-title');
+const modalMeta  = document.getElementById('modal-meta');
+
+function openModal(idx) {
+  const d = VIDEOS[idx];
+  modalVid.src = d.src;
+  modalTitle.textContent = d.title;
+  modalMeta.innerHTML = d.meta.replace(/\n/g, '<br>');
+  modal.classList.add('open');
+  modalVid.play().catch(() => {});
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  modal.classList.remove('open');
+  modalVid.pause();
+  modalVid.src = '';
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ──────────────────────────────────────────────
+   SCROLL REVEAL
+────────────────────────────────────────────── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('vis');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ──────────────────────────────────────────────
+   SMOOTH SCROLL (anchor links)
+────────────────────────────────────────────── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>
